@@ -1,6 +1,6 @@
 {
   "name": "generator-shopify-react-appsync",
-  "version": "1.0.0-rc2",
+  "version": "1.0.0-rc3",
   "description": "Yeoman Shopify App Generator (React, Polaris, TypeScript, GraphQL, Webpack, AWs AppSync, Serverless)",
   "keywords": [
     "appsync",
