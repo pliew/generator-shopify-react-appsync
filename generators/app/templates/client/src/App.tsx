@@ -59,7 +59,6 @@ export class App extends React.Component<{}, {}> {
             <UnexpectedErrorScreen>
                 <React.StrictMode>
                     <ApolloProvider client={client}>
-                        // @ts-ignore
                         <Rehydrated>
                             <BrowserRouter>
                                 <Switch>

@@ -48,12 +48,14 @@ exports[`Renders correctly with error 1`] = `
               <input
                 aria-describedby="shopError"
                 aria-invalid={true}
+                aria-label="Please enter the “myshopify” domain of your store"
                 aria-labelledby="shopLabel"
                 autoFocus={true}
                 className="Polaris-TextField__Input"
                 id="shop"
                 name="shop"
                 onChange={[Function]}
+                onKeyPress={[Function]}
                 placeholder="example.myshopify.com"
                 style={null}
                 value="example.myshopify.comx"
@@ -64,28 +66,32 @@ exports[`Renders correctly with error 1`] = `
             </div>
             <div
               className="Polaris-Labelled__Error"
-              id="shopError"
             >
               <div
-                className="Polaris-Labelled__ErrorIcon"
+                className="Polaris-InlineError"
+                id="shopError"
               >
-                <span
-                  className="Polaris-Icon"
+                <div
+                  className="Polaris-InlineError__Icon"
                 >
-                  <svg
-                    aria-hidden="true"
-                    className="Polaris-Icon__Svg"
-                    dangerouslySetInnerHTML={
-                      Object {
-                        "__html": "<path d=\\"M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-8h2V6H9v4zm0 4h2v-2H9v2z\\"  fill-rule=\\"evenodd\\"/>",
+                  <span
+                    className="Polaris-Icon"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      className="Polaris-Icon__Svg"
+                      dangerouslySetInnerHTML={
+                        Object {
+                          "__html": "<path d=\\"M10 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-1-8h2V6H9v4zm0 4h2v-2H9v2z\\"  fill-rule=\\"evenodd\\"/>",
+                        }
                       }
-                    }
-                    focusable="false"
-                    viewBox="0 0 20 20"
-                  />
-                </span>
+                      focusable="false"
+                      viewBox="0 0 20 20"
+                    />
+                  </span>
+                </div>
+                Store domain name is wrong
               </div>
-              Store domain name is wrong
             </div>
           </div>
         </div>
@@ -160,12 +166,14 @@ exports[`Renders correctly with no error or shop 1`] = `
             >
               <input
                 aria-invalid={false}
+                aria-label="Please enter the “myshopify” domain of your store"
                 aria-labelledby="shopLabel"
                 autoFocus={true}
                 className="Polaris-TextField__Input"
                 id="shop"
                 name="shop"
                 onChange={[Function]}
+                onKeyPress={[Function]}
                 placeholder="example.myshopify.com"
                 style={null}
                 value=""
@@ -247,12 +255,14 @@ exports[`Renders correctly with shop 1`] = `
             >
               <input
                 aria-invalid={false}
+                aria-label="Please enter the “myshopify” domain of your store"
                 aria-labelledby="shopLabel"
                 autoFocus={true}
                 className="Polaris-TextField__Input"
                 id="shop"
                 name="shop"
                 onChange={[Function]}
+                onKeyPress={[Function]}
                 placeholder="example.myshopify.com"
                 style={null}
                 value="example.myshopify.com"
@@ -334,12 +344,14 @@ exports[`Renders correctly with shop and disabled install 1`] = `
             >
               <input
                 aria-invalid={false}
+                aria-label="Please enter the “myshopify” domain of your store"
                 aria-labelledby="shopLabel"
                 autoFocus={true}
                 className="Polaris-TextField__Input"
                 id="shop"
                 name="shop"
                 onChange={[Function]}
+                onKeyPress={[Function]}
                 placeholder="example.myshopify.com"
                 style={null}
                 value="example.myshopify.com"

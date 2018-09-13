@@ -187,7 +187,6 @@ test("Creates a new user", async () => {
         identityProvider,
         dynamodb,
         stepFunctions,
-        // @ts-ignore
         fetch,
     );
 
@@ -417,7 +416,6 @@ test("Finds an existing user", async () => {
         identityProvider,
         dynamodb,
         stepFunctions,
-        // @ts-ignore
         fetch,
     );
 

@@ -13,7 +13,6 @@ afterAll(() => {
 });
 
 test("Returns failure if JWT_SECRET environment variable isn't set", async () => {
-    // @ts-ignore
     const event: CognitoUserPoolEvent = {
         callerContext: {
             awsSdkVersion: "1",
@@ -55,7 +54,6 @@ test("Returns failure if JWT_SECRET environment variable isn't set", async () =>
 });
 
 test("Returns failure if no challenge answer is provided", async () => {
-    // @ts-ignore
     const event: CognitoUserPoolEvent = {
         callerContext: {
             awsSdkVersion: "1",
@@ -96,7 +94,6 @@ test("Returns failure if no challenge answer is provided", async () => {
 });
 
 test("Returns failure if token doesn't validate", async () => {
-    // @ts-ignore
     const event: CognitoUserPoolEvent = {
         callerContext: {
             awsSdkVersion: "1",
@@ -140,7 +137,6 @@ test("Returns failure if token doesn't validate", async () => {
 test("Returns success if the token is valid", async () => {
     const challengeAnswer = createJWT("example@myshopify.com", process.env.JWT_ISS || "", new Date(), 600);
 
-    // @ts-ignore
     const event: CognitoUserPoolEvent = {
         callerContext: {
             awsSdkVersion: "1",

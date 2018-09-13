@@ -64,16 +64,12 @@ test("Adds new webhooks", async () => {
     const result = await handlerAsync(
         event,
         webhooks,
-        // @ts-ignore
         fetch,
     );
 
     expect(result).toEqual(event);
-    // @ts-ignore
     expect(fetch.mock.calls.length).toBe(2);
-    // @ts-ignore
     expect(fetch.mock.calls[0][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
             "Accept": "application/json",
@@ -82,9 +78,7 @@ test("Adds new webhooks", async () => {
         },
         method: "GET",
     });
-    // @ts-ignore
     expect(fetch.mock.calls[1][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[1][1]).toEqual({
         // tslint:disable-next-line:max-line-length
         body: "{\"webhook\":{\"address\":\"https://app.example.com/shop/update\",\"format\":\"json\",\"topic\":\"shop/update\"}}",
@@ -151,16 +145,12 @@ test("Deletes old webhooks", async () => {
     const result = await handlerAsync(
         event,
         webhooks,
-        // @ts-ignore
         fetch,
     );
 
     expect(result).toEqual(event);
-    // @ts-ignore
     expect(fetch.mock.calls.length).toBe(2);
-    // @ts-ignore
     expect(fetch.mock.calls[0][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
             "Accept": "application/json",
@@ -169,9 +159,7 @@ test("Deletes old webhooks", async () => {
         },
         method: "GET",
     });
-    // @ts-ignore
     expect(fetch.mock.calls[1][0]).toEqual("https://example.myshopify.com/admin/webhooks/2.json");
-    // @ts-ignore
     expect(fetch.mock.calls[1][1]).toEqual({
         headers: {
             "Accept": "application/json",
@@ -235,16 +223,12 @@ test("Update existing webhooks", async () => {
     const result = await handlerAsync(
         event,
         webhooks,
-        // @ts-ignore
         fetch,
     );
 
     expect(result).toEqual(event);
-    // @ts-ignore
     expect(fetch.mock.calls.length).toBe(2);
-    // @ts-ignore
     expect(fetch.mock.calls[0][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
             "Accept": "application/json",
@@ -253,9 +237,7 @@ test("Update existing webhooks", async () => {
         },
         method: "GET",
     });
-    // @ts-ignore
     expect(fetch.mock.calls[1][0]).toEqual("https://example.myshopify.com/admin/webhooks/1.json");
-    // @ts-ignore
     expect(fetch.mock.calls[1][1]).toEqual({
         // tslint:disable-next-line:max-line-length
         body: "{\"webhook\":{\"address\":\"https://app.example.com/new/app/uninstalled\",\"format\":\"json\",\"topic\":\"app/uninstalled\"}}",
@@ -341,16 +323,12 @@ test("Does not add mandatory webhooks", async () => {
     const result = await handlerAsync(
         event,
         webhooks,
-        // @ts-ignore
         fetch,
     );
 
     expect(result).toEqual(event);
-    // @ts-ignore
     expect(fetch.mock.calls.length).toBe(2);
-    // @ts-ignore
     expect(fetch.mock.calls[0][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[0][1]).toEqual({
         headers: {
             "Accept": "application/json",
@@ -359,9 +337,7 @@ test("Does not add mandatory webhooks", async () => {
         },
         method: "GET",
     });
-    // @ts-ignore
     expect(fetch.mock.calls[1][0]).toEqual("https://example.myshopify.com/admin/webhooks.json");
-    // @ts-ignore
     expect(fetch.mock.calls[1][1]).toEqual({
         // tslint:disable-next-line:max-line-length
         body: "{\"webhook\":{\"address\":\"https://app.example.com/shop/update\",\"format\":\"json\",\"topic\":\"shop/update\"}}",

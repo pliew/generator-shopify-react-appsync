@@ -36,12 +36,10 @@ exports[`Renders correctly 1`] = `
             className="Polaris-EmptyState__Actions"
           >
             <div
-              className="Polaris-ButtonGroup"
+              className="Polaris-Stack Polaris-Stack--alignmentCenter"
             >
               <div
-                className="Polaris-ButtonGroup__Item"
-                onBlur={[Function]}
-                onFocus={[Function]}
+                className="Polaris-Stack__Item"
               >
                 <a
                   className="Polaris-Button Polaris-Button--primary Polaris-Button--sizeLarge"

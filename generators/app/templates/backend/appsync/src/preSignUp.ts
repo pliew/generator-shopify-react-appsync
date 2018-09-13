@@ -14,7 +14,6 @@ export const handler = withAsyncMonitoring<CognitoUserPoolEvent, Context, Cognit
         if (event.request.userAttributes.email) {
             for (const domain of autoConfirmDomains) {
                 if (event.request.userAttributes.email.endsWith(domain)) {
-                    // @ts-ignore
                     event.response = {
                         autoConfirmUser: true,
                     };
