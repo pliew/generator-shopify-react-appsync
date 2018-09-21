@@ -17,7 +17,7 @@ export const handler = withAsyncMonitoring<CognitoUserPoolEvent, Context, Cognit
             try {
                 jwt.verify(challengeAnswer, jwtSecret, {
                     clockTolerance: 600,
-                    issuer: process.env.JWT_ISS || "<%= appname %>",
+                    issuer: process.env.JWT_ISS || "campaignpanel",
                     subject: event.userName,
                 });
                 event.response.answerCorrect = true;

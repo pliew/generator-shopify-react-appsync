@@ -1,0 +1,223 @@
+# Cognito User Pool Service
+#
+# This is the serverless.yml for the AppSync service.
+
+service:
+  name: <%= appname %>-cognito
+
+# Add the serverless-webpack plugin
+plugins:
+  - serverless-webpack
+  - serverless-iam-roles-per-function
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  memorySize: 256
+  timeout: 3
+  environment:
+    JWT_ISS: ${ssm:/<%= appname %>/${self:custom.stage}/jwtIss}
+    JWT_SECRET: ${ssm:/<%= appname %>/${self:custom.stage}/jwtSecret}
+    REPLY_EMAIL: ${ssm:/<%= appname %>/${self:custom.stage}/replyEmail}
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  region: ${opt:region, self:provider.region}
+  userPoolName: "${self:service}-user-pool-${self:custom.stage}"
+  identityPoolName: "<%= appname %> ${self:custom.stage}"
+  webpack:
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "yarn"
+
+package:
+  exclude:
+    - .gitignore
+    - coverage/**
+    - env-example.yml
+    - env.yml
+    - src/**
+    - schema.json
+    - serverless.yml
+    - templates/**
+    - tsconfig.json
+    - tslint.json
+    - webpack.config.js
+    - yarn.lock
+
+functions:
+  createAuthChallenge:
+    handler: src/createAuthChallenge.handler
+    events:
+      - cognitoUserPool:
+          pool: AppUserPool
+          trigger: CreateAuthChallenge
+  defineAuthChallenge:
+    handler: src/defineAuthChallenge.handler
+    events:
+      - cognitoUserPool:
+          pool: AppUserPool
+          trigger: DefineAuthChallenge
+  preSignUp:
+    handler: src/preSignUp.handler
+    events:
+      - cognitoUserPool:
+          pool: AppUserPool
+          trigger: PreSignUp
+  verifyAuthChallengeResponse:
+    handler: src/verifyAuthChallengeResponse.handler
+    events:
+      - cognitoUserPool:
+          pool: AppUserPool
+          trigger: VerifyAuthChallengeResponse
+
+resources:
+  Resources:
+    CognitoUserPoolAppUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        DeviceConfiguration: 
+          ChallengeRequiredOnNewDevice: false
+        EmailConfiguration: 
+          ReplyToEmailAddress: ${self:provider.environment.REPLY_EMAIL}
+        MfaConfiguration: OFF
+        Policies: 
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: true
+            RequireUppercase: true
+        Schema:
+          -
+            AttributeDataType: String
+            Mutable: true
+            Name: "access_token"
+          -
+            AttributeDataType: String
+            Mutable: true
+            Name: "internal_domain"
+          -
+            AttributeDataType: String
+            Name: "shop_id"
+        UsernameAttributes:
+          - email
+        UserPoolName: ${self:custom.userPoolName}
+    CognitoUserPoolClientAppUserPoolDefault:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: "default-client"
+        GenerateSecret: false
+        RefreshTokenValidity: 30
+        UserPoolId: { "Ref": "CognitoUserPoolAppUserPool" }
+    CognitoUserPoolClientAppUserPoolOAuth:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: "oauth-client"
+        GenerateSecret: false
+        ExplicitAuthFlows:
+          - "CUSTOM_AUTH_FLOW_ONLY"
+        RefreshTokenValidity: 30
+        UserPoolId: { "Ref": "CognitoUserPoolAppUserPool" }
+    CognitoIdentityPoolAuthenticatedRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            -
+              Effect: Allow
+              Principal:
+                Federated: cognito-identity.amazonaws.com
+              Action: sts:AssumeRoleWithWebIdentity
+              Condition:
+                StringEquals:
+                  cognito-identity.amazonaws.com:aud:
+                    Ref: CognitoIdentityPool
+                ForAnyValue:StringLike:
+                  cognito-identity.amazonaws.com:amr: authenticated
+        Path: "/"
+        Policies:
+          -
+            PolicyName: "${self:service}-${self:custom.stage}-${self:custom.region}-authenticateRolePolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                -
+                  Effect: "Allow"
+                  Action:
+                    - "mobileanalytics:PutEvents"
+                    - "cognito-sync:*"
+                    - "cognito-identity:*"
+                  Resource:
+                    - "*"
+        RoleName: "${self:service}-${self:custom.stage}-${self:custom.region}-authenticatedRole"
+    CognitoIdentityPoolUnauthenticatedRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            -
+              Effect: Allow
+              Principal:
+                Federated: cognito-identity.amazonaws.com
+              Action: sts:AssumeRoleWithWebIdentity
+              Condition:
+                StringEquals:
+                  cognito-identity.amazonaws.com:aud:
+                    Ref: CognitoIdentityPool
+                ForAnyValue:StringLike:
+                  cognito-identity.amazonaws.com:amr: unauthenticated
+        Path: "/"
+        Policies:
+          -
+            PolicyName: "${self:service}-${self:custom.stage}-${self:custom.region}-authenticateRolePolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                -
+                  Effect: "Allow"
+                  Action:
+                    - "mobileanalytics:PutEvents"
+                    - "cognito-sync:*"
+                  Resource:
+                    - "*"
+        RoleName: "${self:service}-${self:custom.stage}-${self:custom.region}-unauthenticatedRole"
+    CognitoIdentityPool:
+      Type: AWS::Cognito::IdentityPool
+      Properties:
+        IdentityPoolName: ${self:custom.identityPoolName}
+        AllowUnauthenticatedIdentities: false
+        CognitoIdentityProviders:
+          - ClientId:
+              Ref: CognitoUserPoolClientAppUserPoolDefault
+            ProviderName:
+              Fn::GetAtt: [ "CognitoUserPoolAppUserPool", "ProviderName" ]
+          - ClientId:
+              Ref: CognitoUserPoolClientAppUserPoolOAuth
+            ProviderName:
+              Fn::GetAtt: [ "CognitoUserPoolAppUserPool", "ProviderName" ]
+    CognitoIdentityPoolAuthenticateRoleAttachment:
+      Type: AWS::Cognito::IdentityPoolRoleAttachment
+      Properties:
+        IdentityPoolId:
+          Ref: CognitoIdentityPool
+        Roles:
+          authenticated:
+            Fn::GetAtt: [ "CognitoIdentityPoolAuthenticatedRole", "Arn" ]
+          unauthenticated:
+            Fn::GetAtt: [ "CognitoIdentityPoolUnauthenticatedRole", "Arn" ]
+
+  Outputs:
+    CognitoUserPoolAppUserPoolId:
+      Description: "The ID for the Cognito User Pool"
+      Value:
+        Ref: CognitoUserPoolAppUserPool
+    CognitoUserPoolAppUserPoolArn:
+      Description: "The ARN for the Cognito User Pool"
+      Value:
+        Fn::GetAtt:
+          - CognitoUserPoolAppUserPool
+          - Arn

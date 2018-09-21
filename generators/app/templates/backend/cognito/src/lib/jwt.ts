@@ -7,7 +7,7 @@ export function createJWT(sub: string, jti: string, now: Date, expireIn: number)
     const payload = {
         exp,
         iat,
-        iss: process.env.JWT_ISS || "<%= appname %>",
+        iss: process.env.JWT_ISS || "campaignpanel",
         jti,
         sub,
     };

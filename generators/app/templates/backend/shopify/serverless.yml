@@ -29,8 +29,8 @@ custom:
   dashService: <%= appname %>Dashshopify  # Kludge requires for serverless-step-functions
   stage: ${opt:stage, self:provider.stage}
   region: ${opt:region, self:provider.region}
-  cognitoUserPoolId: ${cf:<%= appname %>-appsync-${self:custom.stage}.CognitoUserPoolAppUserPoolId}
-  cognitoUserPoolArn: ${cf:<%= appname %>-appsync-${self:custom.stage}.CognitoUserPoolAppUserPoolArn}
+  cognitoUserPoolId: ${cf:<%= appname %>-cognito-${self:custom.stage}.CognitoUserPoolAppUserPoolId}
+  cognitoUserPoolArn: ${cf:<%= appname %>-cognito-${self:custom.stage}.CognitoUserPoolAppUserPoolArn}
   shopsTable: ${cf:<%= appname %>-appsync-${self:custom.stage}.ShopsTable}
   shopsTableArn: ${cf:<%= appname %>-appsync-${self:custom.stage}.ShopsTableArn}
   appUninstalledTopic: "${self:service}-app-uninstalled-${self:custom.stage}"

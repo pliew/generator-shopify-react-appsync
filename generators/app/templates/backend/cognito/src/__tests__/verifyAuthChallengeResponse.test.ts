@@ -20,6 +20,7 @@ test("Returns failure if JWT_SECRET environment variable isn't set", async () =>
         },
         region: "",
         request: {
+            // @ts-ignore
             // tslint:disable-next-line:max-line-length
             challengeAnswer: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjY0NDg5NjIsImlhdCI6MTUyNjQ0ODk1MiwiaXNzIjoiand0LWlzcyIsImp0aSI6Imp3dC1pc3MiLCJzdWIiOiJleGFtcGxlQG15c2hvcGlmeS5jb20ifQ.rR9a9ulWy0UPXvN6NN5eGmaE0-CYS0MidICduVXH7uo",
             userAttributes: {},
@@ -61,6 +62,7 @@ test("Returns failure if no challenge answer is provided", async () => {
         },
         region: "",
         request: {
+            // @ts-ignore
             challengeAnswer: "",
             userAttributes: {},
         },
@@ -101,6 +103,7 @@ test("Returns failure if token doesn't validate", async () => {
         },
         region: "",
         request: {
+            // @ts-ignore
             // tslint:disable-next-line:max-line-length
             challengeAnswer: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjY0NDg5NjIsImlhdCI6MTUyNjQ0ODk1MiwiaXNzIjoiand0LWlzcyIsImp0aSI6Imp3dC1pc3MiLCJzdWIiOiJleGFtcGxlQG15c2hvcGlmeS5jb20ifQ.rR9a9ulWy0UPXvN6NN5eGmaE0-CYS0MidICduVXH7uo",
             userAttributes: {},
@@ -144,6 +147,7 @@ test("Returns success if the token is valid", async () => {
         },
         region: "",
         request: {
+            // @ts-ignore
             challengeAnswer,
             userAttributes: {},
         },

@@ -58,13 +58,19 @@ export class CallbackScreen extends React.Component<ICallbackScreenProps, ICallb
                 const json = await result.json();
                 const userName = params.shop.replace(".myshopify.com", "@myshopify.com");
                 const user = await Auth.signIn(userName);
+                // @ts-ignore
                 if (user.challengeName === "CUSTOM_CHALLENGE" && user.challengeParam.distraction === "Yes") {
                     await Auth.sendCustomChallengeAnswer(user, json.token);
+                    this.setState({
+                        callbackSuccess: true,
+                        errorMessage: null,
+                    });
+                } else {
+                    this.setState({
+                        callbackSuccess: false,
+                        errorMessage: "Expected Custom Challenge",
+                    });
                 }
-                this.setState({
-                    callbackSuccess: true,
-                    errorMessage: null,
-                });
             } else {
                 console.error(result.statusText);
                 this.setState({

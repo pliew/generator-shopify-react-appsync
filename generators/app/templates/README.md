@@ -24,8 +24,9 @@ yo shopify-react-appsync --appname YOUR-APP-NAME --shopifyApiKey YOUR-SHOPIFY-AP
 
 ## Deployment Order
 
-You need to deploy the services in the following order:
+You need to deploy the backend services in the following order:
 
+* Cognito
 * AppSync
 * Shopify
 
@@ -41,12 +42,29 @@ aws ssm put-parameter --name /YOUR-APP-NAME/STAGE/shopifyApiKey --value YOUR-SHO
 aws ssm put-parameter --name /YOUR-APP-NAME/STAGE/shopifyApiSecret --value YOUR-SHOPIFY-API-SECRET --type String
 ```
 
-
 ## AppSync
 
 ### Dependencies
 
 The dependencies for the AppSync service are located in `backend/appsync/package.json` and are managed using [Yarn](https://yarnpkg.com/). To install the dependencies to `backend/appsync` folder and use the command:
+
+```sh
+yarn install
+```
+
+### Deployment
+
+Make sure you have setup all of the parameters in the System Manager Parameter Store then deploy the service use the command
+
+```sh
+sls deploy -r YOUR-REGION -s YOUR-STAGE --aws-profile YOUR-AWS-PROFILE
+```
+
+## Cognito
+
+### Dependencies
+
+The dependencies for the Cognito service are located in `backend/cognito/package.json` and are managed using [Yarn](https://yarnpkg.com/). To install the dependencies to `backend/cognito` folder and use the command:
 
 ```sh
 yarn install

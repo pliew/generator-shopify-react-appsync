@@ -1,7 +1,7 @@
 {
-  "name": "<%= appname %>-appsync",
+  "name": "campaignpanel-appsync",
   "version": "1.0.0",
-  "description": "<%= appname %>-appsync (built using Shopify AppSync Yeoman generator)",
+  "description": "campaignpanel-appsync (built using Shopify AppSync Yeoman generator)",
   "main": "index.js",
   "repository": "https://github.com/buggy/generator-shopify-react-appsync",
   "author": "Rich Buggy<rich@buggy.id.au>",
